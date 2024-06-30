@@ -47,6 +47,7 @@ func (h *Handler) DeleteUserHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK,resp)
+
 }
 
 func (h *Handler)  GetUserByIdProfileHandler(c *gin.Context) {
