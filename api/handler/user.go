@@ -19,5 +19,4 @@ func (h *Handler)  GetUserByIdHandler(c *gin.Context){
 	}
 
 	c.JSON(http.StatusOK,resp)
-	return
 }
