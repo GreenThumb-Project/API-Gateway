@@ -10,11 +10,3 @@ type Handler struct{
 	User users.UserManagementClient
 	Garden gardenManagement.GardenManagementClient
 }
-
-
-func NewHendler(user users.UserManagementClient, garden gardenManagement.GardenManagementClient) *Handler {
-	return &Handler{
-		User: user,
-		Garden: garden,
-	}
-}
