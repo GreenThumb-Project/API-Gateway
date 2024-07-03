@@ -3,6 +3,7 @@ package main
 import (
 	"api-gateway-service/api"
 	"api-gateway-service/api/handler"
+	"api-gateway-service/config"
 	"api-gateway-service/generated/gardenManagement"
 	"api-gateway-service/generated/users"
 	"log"
@@ -12,11 +13,12 @@ import (
 )
 
 func main() {
+	cfg := config.Load()
 	hand := NewConnect()
 
 	router := api.Router(hand)
 
-	log.Fatal(router.Run(":8080"))
+	log.Fatal(router.Run(cfg.HTTP_PORT))
 }
 
 func NewConnect() *handler.Handler {
