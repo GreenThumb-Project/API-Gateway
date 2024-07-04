@@ -11,7 +11,7 @@ import (
 type Handler struct{
 	User users.UserManagementClient
 	Garden gardenManagement.GardenManagementClient
-	Community community.ComunityCserviceClient
+	Community community.ComunityServiceClient
 	Sustainability sustainability.SustainabilityimpactServiceClient
 }
 

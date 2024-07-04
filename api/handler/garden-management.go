@@ -2,6 +2,7 @@ package handler
 
 import (
 	"api-gateway-service/generated/gardenManagement"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -19,9 +20,9 @@ func (h *Handler) CreateGardenHandler(ctx *gin.Context) {
 
 		return 
 	}
-
 	resp, err := h.Garden.CreateGarden(ctx, &garden)
 	if err != nil {
+		fmt.Println(err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"Error": err.Error(),
 		})
