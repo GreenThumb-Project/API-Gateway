@@ -77,5 +77,5 @@ func (h *Handler) GetChallengesHandle(ctx *gin.Context) {
 }
 
 func (h *Handler) JoinChallengeHandler(ctx *gin.Context) {
-	
+
 }
