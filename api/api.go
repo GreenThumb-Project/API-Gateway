@@ -24,5 +24,11 @@ func Router(hand *handler.Handler) *gin.Engine {
 		auth.POST("registr",hand.CreateUserHandler)
 	}
 
+	garden := router.Group("/api/gardens")
+	{
+		garden.POST("/", hand.CheckUser(), hand.CreateGardenHandler)
+		garden.GET("/:garden-id", hand.ViewGardeHandler)
+	}
+
 	return router
 }
