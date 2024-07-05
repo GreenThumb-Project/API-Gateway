@@ -172,5 +172,4 @@ func (h *Handler) GetCommunitiesLeaderboardHandler(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, resp)
-
 }

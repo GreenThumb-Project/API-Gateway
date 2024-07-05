@@ -8,7 +8,7 @@ import (
 )
 
 func (h *Handler) GetUserByIdHandler(c *gin.Context) {
-	userId := c.Param("userId")
+	userId := c.Param("user-id")
 
 	resp, err := h.User.GetUserById(c, &pb.GetUserByIdRequest{UserId: userId})
 
@@ -37,7 +37,7 @@ func (h *Handler) CreateUserHandler(c *gin.Context) {
 }
 
 func (h *Handler) DeleteUserHandler(c *gin.Context) {
-	userId:=c.Param("userId")
+	userId:=c.Param("user-id")
 
 	resp,err:=h.User.DeleteUser(c,&pb.DeleteUserRequest{UserId: userId})
 
@@ -51,7 +51,7 @@ func (h *Handler) DeleteUserHandler(c *gin.Context) {
 }
 
 func (h *Handler)  GetUserByIdProfileHandler(c *gin.Context) {
-	userId:=c.Param("userId")
+	userId:=c.Param("user-id")
 
 	resp,err:=h.User.GetUserByIdProfile(c,&pb.GetUserByIdProfileRequest{UserId: userId})
 
@@ -64,6 +64,7 @@ func (h *Handler)  GetUserByIdProfileHandler(c *gin.Context) {
 }
 
 func (h *Handler) UpdateUserProfileHandler(c *gin.Context)  {
+	id := c.Param("user-id")
 	var userProfil pb.UpdateUserProfileRequest
 	err:=c.BindJSON(&userProfil)
 
@@ -71,7 +72,7 @@ func (h *Handler) UpdateUserProfileHandler(c *gin.Context)  {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
+	userProfil.UserId = id
 	resp,err:=h.User.UpdateUserProfile(c,&userProfil)
 
 	if err != nil {

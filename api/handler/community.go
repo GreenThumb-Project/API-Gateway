@@ -104,7 +104,7 @@ func (h *Handler) ListCommunitiesHandler(ctx *gin.Context) {
 func (h *Handler) JoinCommunityHendler(ctx *gin.Context) {
 	id :=ctx.Param("id")
 
-	req:=community.JoinCommunityRequest{Id: id}
+	req:=community.JoinCommunityRequest{UserId: id}
 
 	resp,err:=h.Community.JoinCommunity(ctx,&req)
 
@@ -121,7 +121,7 @@ func (h *Handler) JoinCommunityHendler(ctx *gin.Context) {
 func (h *Handler) LeaveCommunityHandler(ctx *gin.Context)  {
 	id :=ctx.Param("id")
 
-	req:=community.LeaveCommunityRequest{Id: id}
+	req:=community.LeaveCommunityRequest{CommunityId: id}
 
 	resp,err:=h.Community.LeaveCommunity(ctx,&req)
 
@@ -163,7 +163,7 @@ func (h *Handler) CreateCommunityEventHendler(ctx *gin.Context)  {
 func (h *Handler) ListCommunityEventsHandler(ctx *gin.Context)  {
 	id :=ctx.Param("id")
 
-	req:=community.ListCommunityEventsRequest{Id: id}
+	req:=community.ListCommunityEventsRequest{CommunityId: id}
 
 	resp,err:=h.Community.ListCommunityEvents(ctx,&req)
 
