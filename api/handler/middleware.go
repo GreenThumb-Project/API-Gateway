@@ -33,7 +33,7 @@ func (h *Handler) CheckUser() gin.HandlerFunc {
 		resp, err := h.User.CheckUser(c, &users.UserRequest{UserId: userId})
 		if err != nil {
 			fmt.Println(errors.Is(err, sql.ErrNoRows), err)
-			if !errors.Is(err, sql.ErrNoRows) || (resp != nil && !resp.Exists) {
+			if errors.Is(err, sql.ErrNoRows) || (resp != nil && !resp.Exists) {
 				c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 				c.Abort()
 				return

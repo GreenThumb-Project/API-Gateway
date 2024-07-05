@@ -136,6 +136,7 @@ func (h *Handler) ViewUserGardensHandler(ctx *gin.Context) {
 }
 
 func (h *Handler) AddPlanttoGarden(ctx *gin.Context) {
+	id := ctx.Param("garden-id")
 	var plant gardenManagement.AddPlanttoGardenRequest
 
 	err := ctx.ShouldBindJSON(&plant)
@@ -145,6 +146,7 @@ func (h *Handler) AddPlanttoGarden(ctx *gin.Context) {
 		})
 		return
 	}
+	plant.GardenId = id
 
 	resp, err := h.Garden.AddPlanttoGarden(ctx, &plant)
 
@@ -242,6 +244,8 @@ func (h *Handler) DeletePlantHandler(ctx *gin.Context) {
 }
 
 func (h *Handler) AddPlantCareLogHandler(ctx *gin.Context) {
+	id := ctx.Param("plant-id")
+
 	var careLog gardenManagement.CareLog
 
 	err := ctx.ShouldBindJSON(&careLog)
@@ -252,6 +256,7 @@ func (h *Handler) AddPlantCareLogHandler(ctx *gin.Context) {
 		})
 		return
 	}
+	careLog.PlantId = id
 
 	resp, err := h.Garden.AddPlantCareLog(ctx, (*gardenManagement.AddPlantCareLogResquest)(&careLog))
 	if err != nil {
@@ -269,6 +274,7 @@ func (h *Handler) AddPlantCareLogHandler(ctx *gin.Context) {
 
 func (h *Handler) ViewPlantCareLogsHandler(ctx *gin.Context) {
 	id := ctx.Param("plant-id")
+	fmt.Println(id)
 	req := gardenManagement.ViewPlantCareLogsRequest{PlantId: id}
 
 	carelogs, err := h.Garden.ViewPlantCareLogs(ctx, &req)
