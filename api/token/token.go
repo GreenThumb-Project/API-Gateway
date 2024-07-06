@@ -21,7 +21,7 @@ func GeneratedJWTToken(req *users.LoginResponse) error {
 	claims["username"] = req.Username
 	claims["email"] = req.Email
 	claims["iat"] = time.Now().Unix()
-	claims["exp"] = time.Now().Add(10 * time.Minute).Unix()
+	claims["exp"] = time.Now().Add(1 * time.Hour).Unix()
 
 	newToken, err := token.SignedString([]byte(singingKey))
 
@@ -35,19 +35,19 @@ func GeneratedJWTToken(req *users.LoginResponse) error {
 	return nil
 }
 
-func ExtractClaims(tokenStr string) error {
+func ExtractClaims(tokenStr string) (*jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
 		return []byte(singingKey), nil
 	})
 
 	if err != nil {
-		return err
+		return nil,  err
 	}
 
-	_, ok := token.Claims.(jwt.MapClaims)
+	claims, ok := token.Claims.(jwt.MapClaims)
 	if !(ok && token.Valid) {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &claims, nil
 }

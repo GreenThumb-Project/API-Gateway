@@ -16,7 +16,7 @@ func Middleware(c *gin.Context) {
 		return
 	}
 
-	err := token.ExtractClaims(tokenStr)
+	_, err := token.ExtractClaims(tokenStr)
 	if err != nil {
 		c.AbortWithStatusJSON(403, gin.H{
 			"error": "invalid token",
