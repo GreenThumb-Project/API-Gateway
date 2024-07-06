@@ -1,7 +1,8 @@
 package handler
 
 import (
-
+	"api-gateway-service/api/token"
+	"api-gateway-service/generated/community"
 	pb "api-gateway-service/generated/sustainability"
 	"net/http"
 
@@ -10,6 +11,10 @@ import (
 
 func (h *Handler) LogImpactHandle(ctx *gin.Context) {
 	var logImpact pb.LogImpactRequest
+
+	claims, _ := token.ExtractClaims(ctx.GetHeader("Authorization"))
+	userId, _ := (*claims)["user_id"].(string)
+	logImpact.UserId = userId
 
 	err := ctx.ShouldBindJSON(&logImpact)
 	if err != nil {
@@ -52,7 +57,19 @@ func (h *Handler) GetUserImpactHandle(ctx *gin.Context) {
 func (h *Handler) GetCommunityImpactHandle(ctx *gin.Context) {
 	id := ctx.Param("community-id")
 
-	logImpact, err := h.Sustainability.GetCommunityImpact(ctx, &pb.GetCommunityImpactRequest{Id: id})
+	members, err := h.Community.CommunityMembers(ctx, &community.CommunityMembersRequest{ComunityId: id})
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+
+	logImpact, err := h.Sustainability.GetCommunityImpact(ctx, &pb.GetCommunityImpactRequest{
+		CommunityId: id,
+		Members: members.Members,
+	})
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -78,6 +95,7 @@ func (h *Handler) GetChallengesHandle(ctx *gin.Context) {
 }
 
 func (h *Handler) JoinChallengeHendler1(ctx *gin.Context) {
+	id := ctx.Param("challenge-id")
 	var req pb.JoinChallengeRequest
 
 	err := ctx.BindJSON(&req)
@@ -88,6 +106,8 @@ func (h *Handler) JoinChallengeHendler1(ctx *gin.Context) {
 		})
 		return
 	}
+
+	req.ChallengeId = id
 
 	resp, err := h.Sustainability.JoinChallenge(ctx, &req)
 
@@ -101,6 +121,8 @@ func (h *Handler) JoinChallengeHendler1(ctx *gin.Context) {
 }
 
 func (h *Handler) UpdateChallengeProgressHendler1(ctx *gin.Context) {
+	id := ctx.Param("challenge-id")
+
 	var req pb.UpdateChallengeProgressRequest
 
 	err := ctx.BindJSON(&req)
@@ -111,7 +133,7 @@ func (h *Handler) UpdateChallengeProgressHendler1(ctx *gin.Context) {
 		})
 		return
 	}
-
+	req.ChallengeId = id
 	resp, err := h.Sustainability.UpdateChallengeProgress(ctx, &req)
 
 	if err != nil {
@@ -124,7 +146,7 @@ func (h *Handler) UpdateChallengeProgressHendler1(ctx *gin.Context) {
 }
 
 func (h *Handler) GetUserChallengesHandler(ctx *gin.Context) {
-	id := ctx.Param("id")
+	id := ctx.Param("user-id")
 
 	resp, err := h.Sustainability.GetUserChallenges(ctx, &pb.GetUserChallengesRequest{UserId: id})
 
