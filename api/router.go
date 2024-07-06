@@ -28,7 +28,7 @@ func Router(hand *handler.Handler) *gin.Engine {
 
 	garden := protected.Group("/api/gardens")
 	{
-		garden.POST("/", hand.CheckUser(), hand.CreateGardenHandler)
+		garden.POST("/", hand.CreateGardenHandler)
 		garden.GET("/:garden-id", hand.ViewGardeHandler)
 		garden.PUT("/:garden-id", hand.UpdateGardenHandler)
 		garden.DELETE("/:garden-id", hand.DeleteGardenHandler)
